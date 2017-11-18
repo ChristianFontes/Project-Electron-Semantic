@@ -30,6 +30,10 @@ crashReporter.start({
   uploadToServer: false
 });
 
+process.on('uncaughtException', (error) => {
+    alert(error);
+});
+
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
@@ -43,12 +47,16 @@ app.on('ready', async () => {
     await installExtensions();
   }
 
-  mainWindow = new BrowserWindow({ 
-    width: 1000, 
+  mainWindow = new BrowserWindow({
+    width: 1000,
     height: 800,
-    minWidth: 640,
-    minHeight: 480,
-    show: false 
+    minWidth: 1000,
+    minHeight: 550,
+    show: false
+  });
+
+  process.on('uncaughtException', (error) => {
+      alert(error);
   });
 
   mainWindow.loadURL(url.format({
@@ -75,10 +83,15 @@ app.on('ready', async () => {
         }
       });
 
+      mainWindow.on('minimize',function(event){
+          event.preventDefault()
+          mainWindow.hide();
+      });
+
       app.on('activate', () => {
         mainWindow.show();
       });
-      
+
       app.on('before-quit', () => {
         forceQuit = true;
       });
@@ -90,10 +103,9 @@ app.on('ready', async () => {
   });
 
   if (isDevelopment) {
-    // auto-open dev tools
+  //  auto-open dev tools
     mainWindow.webContents.openDevTools();
-
-    // add inspect element on right click menu
+  //  add inspect element on right click menu
     mainWindow.webContents.on('context-menu', (e, props) => {
       Menu.buildFromTemplate([{
         label: 'Inspect element',

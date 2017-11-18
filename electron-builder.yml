@@ -1,6 +1,6 @@
-appId: com.example.app
-copyright: Example co
-productName: MyApp
+appId: com.bms.app
+copyright: Banco Municipal de Sangre
+productName: Banco de Sangre
 
 asar: true
 
@@ -30,6 +30,7 @@ mac:
 
 win:
   target: nsis
+  icon: "./app/images/logo.ico"
 
 linux:
   target:
